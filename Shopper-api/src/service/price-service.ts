@@ -21,6 +21,7 @@ export async function checkPriceService (product:Product) {
         if (product.new_price > highestPrice || product.new_price < lowestPrice){
             throw createError(422,`Novo preço deve estar entre R$${lowestPrice.toFixed(2)} e R$${highestPrice.toFixed(2)}`)
         }
+       return productDB;
     }
     catch (err) {
         throw err

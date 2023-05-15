@@ -5,7 +5,7 @@ import { priceVerification } from '../middleware/price-middleware.js';
 const priceRouter = Router();
 
 priceRouter
-    .get('/priceValidation',priceVerification,priceValidation)
+    .post('/priceValidation',priceVerification,priceValidation)
     .put('/updatePrice',updatePrice)
 
 export default priceRouter;
