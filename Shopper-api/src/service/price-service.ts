@@ -1,5 +1,5 @@
-import { getProduct, updateProductPrice } from "../repositories/price-repository.js";
-import { Product } from "../types/products-types.js";
+import {  getProduct, updateProductPrice, updatePackPrice, getPackByProductID,getPackByPackId } from "../repositories/price-repository.js";
+import { PackDB, Product } from "../types/products-types.js";
 import createError from 'http-errors';
 
 
@@ -31,10 +31,36 @@ export async function checkPriceService (product:Product) {
 export async function updatePriceService(product:Product) {
 
     try{
+       const productDB = await getProduct(product.product_code);
+       const packDBExist = await getPackByProductID(product.product_code);
+      
+       
+       console.log("Produto", productDB)
+       console.log("Pack", packDBExist)
+      
+
+    if(packDBExist.length === 0){
         await updateProductPrice(product);
     }
+
+   if(packDBExist.length !== 0){
+    await updateProductPrice(product);
+    const packsProductList = await getPackByPackId(packDBExist[0].pack_id)
+    console.log("Pack List prod", packsProductList)
+    let sumProductPrice = 0;
+    for (let i =0; i < packsProductList.length; i++){
+
+        const getPriceProduct = await getProduct(packsProductList[i].product_id);
+        console.log(getPriceProduct)
+        const productPrice = parseFloat(getPriceProduct[0].sales_price);
+        sumProductPrice += productPrice * packsProductList[i].qty;
+    }
+    console.log("Somatoria Final",sumProductPrice)
+    await updatePackPrice(packDBExist,sumProductPrice);
+    }
+   }
     catch (err) {
         throw err
     }
 
-}
+} 

@@ -11,7 +11,6 @@ export async function priceValidation (req:Request,res:Response) {
         catch(err) {
             return res.status(err.statusCode || 500).send(err.message || "Internal server error");
         }
-
 }
 
 export async function updatePrice (req: Request, res:Response) {

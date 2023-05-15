@@ -9,3 +9,10 @@ export type ProductDB = {
     cost_price: string,
     sales_price: string
 }
+
+export type PackDB = {
+    id: number,
+    pack_id: number,
+    product_id: number,
+    qty: number
+}
