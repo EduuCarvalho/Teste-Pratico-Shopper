@@ -1,7 +1,9 @@
 import {connection} from "../config/database.js";
+import { ProductDB } from "../types/products-types.js";
 
-export async function getProduct(id:number){
-    console.log("TO no reposit")
+export async function getProduct(id:number):Promise<ProductDB[]>{
+
     const [rows, fields] = await connection.execute('SELECT * FROM products WHERE code = ?', [id]);
-    console.log(rows)
+
+    return rows as ProductDB[];
 }
