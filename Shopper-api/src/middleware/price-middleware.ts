@@ -1,6 +1,6 @@
-import { productSchema } from "../schemas/price-schema";
+import { productSchema } from "../schemas/price-schema.js";
 import { Request, Response, NextFunction } from "express";
-import { Product } from "../controller/price-controller";
+import { Product } from "../controller/price-controller.js";
 
 
 export async function priceVerification (req:Request, res:Response, next:NextFunction) {
