@@ -2,6 +2,8 @@ import { useState } from "react";
 import styled from "styled-components";
 import axios from "axios";
 import Table from "../components/ProductTable";
+import logo from "../assets/images/shopper-logo.png"
+
 
 export default function HomePageShopper() {
   const [csvData, setCsvData] = useState([]);
@@ -69,7 +71,10 @@ export default function HomePageShopper() {
 
   return (
     <Main>
-      <TopBar>ola</TopBar>
+      <TopBar>
+    <img src={logo} alt={"logo icon"}/>
+    <h1>Teste Técnico</h1>
+      </TopBar>
       <PageContainer>
         <InputTittle htmlFor="csv-input">Selecione um arquivo CSV:</InputTittle>
         <StyledInput
@@ -95,10 +100,20 @@ const Main = styled.div`
 const TopBar = styled.div`
   display: flex;
   background-color: #ffffff;
+  justify-content:space-evenly;
+  align-items:center;
   width: 100%;
   height: 90px;
-  align-items: center;
-  justify-content: space-around;
+
+    img {
+        width:150px;
+    }
+    h1 {
+        font-family: "Montserrat";
+        font-size: 30px;
+        color:#52b591;
+        font-weight:bold;
+    }
 `;
 const PageContainer = styled.div`
   display: flex;
