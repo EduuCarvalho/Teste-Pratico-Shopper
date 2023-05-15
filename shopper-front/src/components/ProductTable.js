@@ -1,12 +1,9 @@
 import React, { useMemo } from "react";
 import { useTable } from "react-table";
-import styled from "styled-components";
-
-
 
 function Table({ data }) {
   const columns = useMemo(
-    () => [      {        Header: "Product Code",        accessor: "product_code",      },      {        Header: "Product Name",        accessor: "product_name",      },      {        Header: "Current Price",        accessor: "current_price",      },      {        Header: "New Price",        accessor: "new_price",      },      {        Header: "Status",        accessor: "status",      },    ],
+    () => [      {        Header: "Product Code",        accessor: "product_code"      },      {        Header: "Product Name",        accessor: "product_name"      },      {        Header: "Current Price",        accessor: "current_price",        Cell: ({ value }) => `R$ ${value}`      },      {        Header: "New Price",        accessor: "new_price",        Cell: ({ value }) => `R$ ${value}`      },      {        Header: "Status",        accessor: "status"      }    ],
     []
   );
 
@@ -17,19 +14,31 @@ function Table({ data }) {
     getTableBodyProps,
     headerGroups,
     rows,
-    prepareRow,
+    prepareRow
   } = useTable({
     columns,
-    data: tableData,
+    data: tableData
   });
 
   return (
-    <TableWrapper {...getTableProps()}>
+    <table {...getTableProps()} style={{ border: "solid 1px #52B591", background: "#F0FFF0", fontFamily: "Montserrat" }}>
       <thead>
         {headerGroups.map((headerGroup) => (
           <tr {...headerGroup.getHeaderGroupProps()}>
             {headerGroup.headers.map((column) => (
-              <th {...column.getHeaderProps()}>{column.render("Header")}</th>
+              <th
+                {...column.getHeaderProps()}
+                style={{
+                  borderBottom: "solid 3px #52B591",
+                  background: "#FFFFFF",
+                  color: "#52B591",
+                  fontWeight: "bold",
+                  textAlign: "center",
+                  padding: "10px",
+                }}
+              >
+                {column.render("Header")}
+              </th>
             ))}
           </tr>
         ))}
@@ -40,45 +49,28 @@ function Table({ data }) {
           return (
             <tr {...row.getRowProps()}>
               {row.cells.map((cell) => {
-                return <td {...cell.getCellProps()}>{cell.render("Cell")}</td>;
+                return (
+                  <td
+                    {...cell.getCellProps()}
+                    style={{
+                      padding: "10px",
+                      border: "solid 1px #52B591",
+                      background: "#FFFFFF",
+                      color: "#52B591",
+                      fontWeight: "bold",
+                      textAlign: "center",
+                    }}
+                  >
+                    {cell.render("Cell")}
+                  </td>
+                );
               })}
             </tr>
           );
         })}
       </tbody>
-    </TableWrapper>
+    </table>
   );
 }
 
 export default Table;
-
-const TableWrapper = styled.table`
-  font-family: "Montserrat", sans-serif;
-  border-collapse: collapse;
-  margin: 1rem 0;
-  width: 100%;
-
-  th,
-  td {
-    border: 1px solid #52b591;
-    padding: 0.5rem;
-    text-align: center;
-  }
-
-  th {
-    background-color: #e8f9f3;
-    font-weight: bold;
-    text-transform: uppercase;
-  }
-
-  tbody tr {
-    background-color: #f0f8f7;
-    font-size: 1.1rem;
-    font-weight: normal;
-    transition: background-color 0.3s ease;
-
-    &:hover {
-      background-color: #d9edea;
-    }
-  }
-`;
