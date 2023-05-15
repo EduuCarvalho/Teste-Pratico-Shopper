@@ -1,6 +1,7 @@
 import { useState } from "react";
 import styled from "styled-components";
 import axios from 'axios';
+import Table from "../components/ProductTable";
 
 
 export default function HomePageShopper() {
@@ -73,6 +74,7 @@ export default function HomePageShopper() {
       <PageContainer>
         <StyledInput type="file" accept=".csv" onChange={handleFileChange}/>
         <StyledButton onClick={priceValidation}>Validar</StyledButton>
+        <Table data={productTable}/>
       </PageContainer>
     </Main>
   );
