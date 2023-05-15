@@ -51,11 +51,9 @@ export async function updatePriceService(product:Product) {
     for (let i =0; i < packsProductList.length; i++){
 
         const getPriceProduct = await getProduct(packsProductList[i].product_id);
-        console.log(getPriceProduct)
         const productPrice = parseFloat(getPriceProduct[0].sales_price);
         sumProductPrice += productPrice * packsProductList[i].qty;
     }
-    console.log("Somatoria Final",sumProductPrice)
     await updatePackPrice(packDBExist,sumProductPrice);
     }
    }
