@@ -5,6 +5,8 @@ import { Product } from "../types/products-types.js";
 
 export async function priceValidation (req:Request,res:Response) {
     const product = req.body as Product;
+
+   
         try {
            const resProduct = await checkPriceService(product);
             return res.status(200).send(resProduct)

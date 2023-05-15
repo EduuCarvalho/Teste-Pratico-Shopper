@@ -8,6 +8,8 @@ import logo from "../assets/images/shopper-logo.png"
 export default function HomePageShopper() {
   const [csvData, setCsvData] = useState([]);
   const [productTable, setProductTable] = useState([]);
+
+
   console.log("tabela", productTable);
 
   const handleFileChange = (event) => {
@@ -27,6 +29,7 @@ export default function HomePageShopper() {
     const lines = text.split("\n");
     const headers = lines[0].split(",");
     const data = [];
+    
 
     for (let i = 1; i < lines.length; i++) {
       const line = lines[i].trim();
@@ -45,28 +48,44 @@ export default function HomePageShopper() {
   };
 
   async function priceValidation() {
+
+   
+
     for (let i = 0; i < csvData.length; i++) {
       console.log(csvData[i]);
       await axios
         .post("http://localhost:5000/priceValidation", csvData[i])
         .then((response) => {
-          console.log("deu bom");
-          console.log(response.data);
+          const product = response.data[0]
           setProductTable((prevState) => [
             ...prevState,
             {
-              product_code: response.data[0].code,
-              product_name: response.data[0].name,
-              current_price: response.data[0].sales_price,
+              product_code: product.code,
+              product_name: product.name,
+              current_price: product.sales_price,
               new_price: csvData[i].new_price,
               status: response.statusText,
             },
           ]);
         })
         .catch((error) => {
-          console.log(error);
+            console.log("erro",error.response.data)
+            const errorResponse = error.response.data
+            
+            setProductTable((prevState) => [
+                ...prevState,
+                {
+                  product_code: errorResponse.product[0] ? errorResponse.product[0].code : "",
+                  product_name: errorResponse.product[0] ? errorResponse.product[0].name : "",
+                  current_price: errorResponse.product[0] ? errorResponse.product[0].sales_price :"",
+                  new_price: csvData[i].new_price,
+                  status:errorResponse.errors.join('\n'),
+                },
+              ]);
         });
     }
+
+    
   }
 
   return (
@@ -83,7 +102,10 @@ export default function HomePageShopper() {
           accept=".csv"
           onChange={handleFileChange}
         />
-        <StyledButton onClick={priceValidation}>Validar</StyledButton>
+        <ButtonContainer>
+        <ValidateButton onClick={priceValidation}>Validar</ValidateButton>
+        <UpdateButton>Atualizar</UpdateButton>
+        </ButtonContainer>
         <Table data={productTable} />
       </PageContainer>
     </Main>
@@ -93,8 +115,8 @@ export default function HomePageShopper() {
 const Main = styled.div`
   display: flex;
   flex-direction: column;
-  width: 100vw;
-  height: 100vh;
+  width: 100%;
+  height: 100%;
   border-top: 6px solid #52b591;
 `;
 const TopBar = styled.div`
@@ -121,7 +143,7 @@ const PageContainer = styled.div`
   align-items: center;
   width: 100%;
   height: 100%;
-  padding: 150px;
+  padding: 100px;
   background: linear-gradient(to bottom, #e8f9f3, #ffffff);
 `;
 const InputTittle = styled.label`
@@ -132,6 +154,7 @@ const InputTittle = styled.label`
     font-weight:bold;
 `
 
+
 const StyledInput = styled.input`
   background-color: #E5F3EC;
   border: 1px solid #52B591;
@@ -139,9 +162,10 @@ const StyledInput = styled.input`
   color:#52b591;
   border-radius: 20px;
   font-size: 16px;
-  padding: 10px 15px;
+  padding: 15px 15px;
   width: 60%;
   margin-bottom: 60px;
+  height:50px;
   
 
   &:focus {
@@ -149,7 +173,13 @@ const StyledInput = styled.input`
   }
 `;
 
-const StyledButton = styled.button`
+const ButtonContainer=styled.div`
+    display:flex;
+    width:60%;
+    justify-content:space-around;
+`
+
+const ValidateButton = styled.button`
   background-color: #52b591;
   border: none;
   border-radius: 20px;
@@ -174,10 +204,36 @@ const StyledButton = styled.button`
   }
 
   &:first-child {
-    border-radius: 20px 0px 0px 20px;
+    border-radius: 20px;
   }
 
-  &:last-child {
-    border-radius: 0px 20px 20px 0px;
+`;
+const UpdateButton = styled.button`
+  background-color: #52b591;
+  border: none;
+  border-radius: 20px;
+  box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.2);
+  color: #fff;
+  cursor: pointer;
+  font-size: 22px;
+  padding: 10px 15px;
+  transition: background-color 0.2s ease-in-out;
+  width: 250px;
+  height: 50px;
+  margin-bottom: 60px;
+  font-family: "Montserrat";
+  font-weight: bold;
+
+  &:hover {
+    background-color: #3a8c6c;
+  }
+
+  &:focus {
+    outline: none;
+  }
+
+
+  &:first-child {
+    border-radius: 20px;
   }
 `;

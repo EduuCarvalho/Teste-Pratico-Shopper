@@ -1,25 +1,37 @@
 import {  getProduct, updateProductPrice, updatePackPrice, getPackByProductID,getPackByPackId } from "../repositories/price-repository.js";
-import { PackDB, Product } from "../types/products-types.js";
+import { PackDB, Product, ProductDB } from "../types/products-types.js";
 import createError from 'http-errors';
 
 
 export async function checkPriceService (product:Product) {
-
+    let errors = []
+   
     try {
         const productDB = await getProduct(product.product_code);
         const highestPrice = parseFloat(productDB[0].sales_price) * 1.1;
         const lowestPrice = parseFloat(productDB[0].sales_price) * 0.9;
         
         if (productDB.length === 0) {
-            throw createError(404,"Produto não encontrado!")
+            errors.push("Produto não encontrado!")
+
+          /*   throw createError(404,"Produto não encontrado!") */
           }
     
         if(parseFloat(productDB[0].cost_price)> product.new_price){
-            throw createError(422,"Novo preço deve ser maior que o preço de custo!")
+            errors.push("Novo preço deve ser maior que o preço de custo!")
+            /* throw createError(422,"Novo preço deve ser maior que o preço de custo!") */
         }  
 
         if (product.new_price > highestPrice || product.new_price < lowestPrice){
-            throw createError(422,`Novo preço deve estar entre R$${lowestPrice.toFixed(2)} e R$${highestPrice.toFixed(2)}`)
+            errors.push(`Novo preço deve estar entre R$${lowestPrice.toFixed(2)} e R$${highestPrice.toFixed(2)}`)
+        /*     throw createError(422,`Novo preço deve estar entre R$${lowestPrice.toFixed(2)} e R$${highestPrice.toFixed(2)}`) */
+        }
+        if (errors.length>0){
+            const response: {
+                errors: string[];
+                product: ProductDB[];
+            } = {errors:errors,product:productDB}
+            throw createError(400,JSON.stringify(response)) 
         }
        return productDB;
     }

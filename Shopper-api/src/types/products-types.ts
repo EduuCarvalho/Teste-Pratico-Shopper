@@ -16,3 +16,8 @@ export type PackDB = {
     product_id: number,
     qty: number
 }
+
+export interface RequestWithErrors extends Request {
+    errors?: string[];
+  }
+
