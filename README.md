@@ -33,7 +33,7 @@ DB_NAME=nome-do-banco-de-dados
 
 ``` 
 
-6. No diretorio da pasta do back end rode a API:
+6. No diretorio da pasta do back end execute a API:
 
 `npm run dev`
 
@@ -44,9 +44,13 @@ Para rodar a aplicação, siga os seguintes passos:
 
 1. Na raiz do projeto fron end execute:
 
+`npm install`
+
+2. Na raiz do projeto fron end execute:
+
 `npm start`
 
-2. Acesse a aplicação em:
+3. Acesse a aplicação em:
 
 `http://localhost:3000`
 
