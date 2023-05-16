@@ -3,12 +3,13 @@ import styled from "styled-components";
 import axios from "axios";
 import Table from "../components/ProductTable";
 import logo from "../assets/images/shopper-logo.png"
+import Swal from 'sweetalert2';
 
 
 export default function HomePageShopper() {
   const [csvData, setCsvData] = useState([]);
   const [productTable, setProductTable] = useState([]);
-
+  const [updateButtonDisable,setUpdateButtonDisable] = useState(false)
 
   console.log("tabela", productTable);
 
@@ -48,7 +49,6 @@ export default function HomePageShopper() {
   };
 
   async function priceValidation() {
-
    
 
     for (let i = 0; i < csvData.length; i++) {
@@ -69,6 +69,7 @@ export default function HomePageShopper() {
           ]);
         })
         .catch((error) => {
+            setUpdateButtonDisable(true)
             console.log("erro",error.response.data)
             const errorResponse = error.response.data
             
@@ -84,9 +85,30 @@ export default function HomePageShopper() {
               ]);
         });
     }
-
-    
+  
   }
+
+    async function updateProducts() {
+        csvData.forEach((product)=>{
+            axios.put("http://localhost:5000/updatePrice",product)
+            .then(()=>
+            Swal.fire({
+                icon: 'success',
+                title: 'Sucesso!',
+                text: 'Produtos atualizados com sucesso!'
+              })
+              )
+            .catch(()=>{
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Erro!',
+                    text: 'Ocorreu um error ao atualizar os produtos!'
+                  });
+            })
+            setCsvData([])
+            setProductTable([])
+        })
+    }
 
   return (
     <Main>
@@ -104,7 +126,8 @@ export default function HomePageShopper() {
         />
         <ButtonContainer>
         <ValidateButton onClick={priceValidation}>Validar</ValidateButton>
-        <UpdateButton>Atualizar</UpdateButton>
+        {productTable.length>0&&<UpdateButton disabled={updateButtonDisable} onClick={updateProducts}>Atualizar</UpdateButton>}
+        
         </ButtonContainer>
         <Table data={productTable} />
       </PageContainer>
@@ -224,10 +247,10 @@ const UpdateButton = styled.button`
   font-family: "Montserrat";
   font-weight: bold;
 
-  &:hover {
-    background-color: #3a8c6c;
-  }
 
+  &:disabled {
+    background-color:lightgray;
+  }
   &:focus {
     outline: none;
   }
