@@ -63,3 +63,10 @@ Agora a porta 3000 está liberada, retorne ao passo 2
 ## Funcionalidades
 
 A partir de um arquivo CSV, a aplicação importa os dados em um input e utiliza a validação de preços com a ajuda do TypeScript. Além disso, a aplicação usa uma conexão com o banco de dados MySQL para realizar a atualização dos preços. A interface é desenvolvida em React.js e a parte do servidor é construída em Node.js. A aplicação é fácil de usar e pode ajudar a economizar tempo e esforço na atualização de preços de produtos em grandes volumes.
+
+![Styled Components](https://img.shields.io/badge/styled--components-%23DB7093.svg?style=for-the-badge&logo=styled-components&logoColor=white)
+![React](https://img.shields.io/badge/react-%2320232a.svg?style=for-the-badge&logo=react&logoColor=%2361DAFB)
+![Visual Studio Code](https://img.shields.io/badge/Visual%20Studio%20Code-0078d7.svg?style=for-the-badge&logo=visual-studio-code&logoColor=white)
+![Node.js](https://img.shields.io/badge/Node.js-339933?style=for-the-badge&logo=node.js&logoColor=white)
+![MySQL](https://img.shields.io/badge/MySQL-4479A1?style=for-the-badge&logo=mysql&logoColor=white)
+
