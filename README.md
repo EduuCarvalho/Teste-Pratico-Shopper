@@ -56,6 +56,6 @@ Por padrão React.js usa a porta 3000 se a mesma estiver em uso execute:
 
 Agora a porta 3000 está liberada, retorne ao passo 2
 
-##Funcionalidades
+## Funcionalidades
 
 A partir de um arquivo CSV, a aplicação importa os dados em um input e utiliza a validação de preços com a ajuda do TypeScript. Além disso, a aplicação usa uma conexão com o banco de dados MySQL para realizar a atualização dos preços. A interface é desenvolvida em React.js e a parte do servidor é construída em Node.js. A aplicação é fácil de usar e pode ajudar a economizar tempo e esforço na atualização de preços de produtos em grandes volumes.
